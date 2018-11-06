@@ -303,7 +303,11 @@ class Validator
 			$expression = "~$propName~";
 			foreach ($node as $nodeKey => & $nodeValue) {
 				if (preg_match($expression, $nodeKey) !== 1) {
-					continue;
+					$errors[] = "Key '$nodeKey' doesn't match expression '$propName'";
+					$isValid = false;
+					if ($this->failFast) {
+						break;
+					}
 				}
 
 				$stack[] = [$propSchema, & $nodeValue, "$path$propName/"];
